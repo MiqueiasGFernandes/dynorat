@@ -1,0 +1,20 @@
+{
+  "name": "dynorat",
+  "version": "0.1.0",
+  "description": "Dyno Remote administration tool",
+  "main": "index.js",
+  "scripts": {
+    "server": "ts-node ./server/index.ts",
+    "client": "ts-node ./client/index.ts"
+  },
+  "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^4.7.3",
+    "socket.io-client": "^4.7.3",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
