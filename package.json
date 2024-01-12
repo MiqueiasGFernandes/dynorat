@@ -4,17 +4,26 @@
   "description": "Dyno Remote administration tool",
   "main": "index.js",
   "scripts": {
+    "preinstall": "nvm install",
     "server": "ts-node ./server/index.ts",
-    "client": "ts-node ./client/index.ts"
+    "client": "ts-node ./client/index.ts",
+    "build": "webpack --config webpack.config.js",
+    "build:bin:server": "pkg ./build/server/index.js -o ./bin/server"
   },
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
     "socket.io": "^4.7.3",
     "socket.io-client": "^4.7.3",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "ts-node": "^10.9.2"
+    "@types/socket.io": "^3.0.2",
+    "dotenv-webpack": "^8.0.1",
+    "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
   }
 }

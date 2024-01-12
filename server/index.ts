@@ -1,10 +1,12 @@
-import { Server } from "socket.io"
 import { exec } from 'child_process';
+import { Server } from "socket.io";
 
 async function handle(){
     const server = new Server()
-    
-    const handler = server.listen(4444)
+
+    console.log(process.env.PORT)
+
+    const handler = server.listen(Number(process.env.PORT))
 
     console.log('Listening...')
 
