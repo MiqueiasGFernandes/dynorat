@@ -7,9 +7,8 @@
     "preinstall": "nvm install",
     "server": "ts-node ./src/server/index.ts",
     "client": "ts-node ./src/client/index.ts",
-    "build:server": "webpack --config webpack.config.js",
-    "build:client": "tsc",
-    "build:bin:server": "pkg ./build/server/index.js -o ./bin/server"
+    "bundle:server": "webpack --config ./server-template/webpack.config.js",
+    "build:client": "tsc"
   },
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
   "license": "ISC",
@@ -20,6 +19,8 @@
     "prompts": "^2.4.2",
     "socket.io": "^4.7.3",
     "socket.io-client": "^4.7.3",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.19",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
