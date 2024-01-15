@@ -5,7 +5,7 @@ import { io } from 'socket.io-client'
 async function handle () {
   config()
 
-  const socket = io('http://localhost:4444')
+  const socket = io(`${process.env.HOST}:${process.env.PORT}`)
 
   socket.on('connect', async () => {
     socket.on('command', (command) => {
