@@ -39,6 +39,8 @@ Para instalar o DynoRAT, siga estas etapas:
 Linux e macOS:
 
 ```
+nvm use
+npm install
 npm run client
 ```
 
