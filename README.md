@@ -26,12 +26,12 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 - Node 18.19.0
 
 Compatibilidade de Sistemas Operecionais Verificada
-----------------------------------------------------------------------------------
-| *Executável*  | *Linux x86*  | *Linux amd_64* | *Windows x86* | *Windows x86*  |
-|--------------------------------------------------------------------------------|
+
+|  Executável   |  Linux x86   |  Linux amd_64  |  Windows x86  |  Windows x86   |
+|---------------|--------------|----------------|---------------|----------------|
 | Servidor      |     OK       |      OK        |     NOK       |     NOK        |
 | Cliente       |     NOK      |      NOK       |     NOK       |     NOK        |
-----------------------------------------------------------------------------------
+
 ## 🚀 Instalando DynoRAT
 
 Para instalar o DynoRAT, siga estas etapas:
