@@ -20,13 +20,12 @@ export class OutputServerPresenter {
       {
         host,
         port
-      }
+      },
+      this._serverRepository
     )
 
     outputServer.writeSettingsAtTemporarlyDotEnv()
     outputServer.compileServer()
-
-    this._serverRepository.save(outputServer).catch((error) => { console.error(error) })
   }
 
   handleServerCreation (): void {

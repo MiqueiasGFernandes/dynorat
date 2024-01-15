@@ -2,7 +2,8 @@ import path from 'node:path'
 import { createHash, randomUUID } from 'node:crypto'
 import { writeFileSync, readFileSync } from 'fs'
 import { Commander } from './CommandAsPromise.util'
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, PrimaryColumn, Repository } from 'typeorm'
+import { EventListener } from '../event/EventListener'
 
 const BUNDLE_SERVER_COMMAND = 'npm run bundle:server'
 const SERVER_TEMPLATE_DIRECTORY = path.resolve(__dirname, '..', '..', 'server-template')
@@ -28,7 +29,9 @@ export class OutputServer {
 
   constructor (
     public outputPath: string = '~/server',
-    public connection: ConnectionOptions = null
+    public connection: ConnectionOptions = null,
+    private readonly _serverRepository: Repository<OutputServer>
+
   ) {
     this.setConnection(connection)
     this.setId()
@@ -45,20 +48,23 @@ export class OutputServer {
     writeFileSync(path.resolve(`${SERVER_TEMPLATE_DIRECTORY}`, '.env'), dotenvContent, 'utf-8')
   }
 
-  compileServer (): this {
-    const bundleOutput = Commander.command(BUNDLE_SERVER_COMMAND)
+  compileServer (): void {
+    Commander.command(BUNDLE_SERVER_COMMAND)
 
-    console.log(bundleOutput)
+    const commandOutput = Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
 
-    const compileOutput = Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
-
-    console.log(compileOutput)
+    console.log(commandOutput)
 
     const fileBuffer = readFileSync(this.outputPath)
 
     this.setHash(fileBuffer)
 
-    return this
+    void this._serverRepository
+      .save(this)
+      .catch((error) => { console.error(error) })
+      .then(() => [
+        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+      ])
   }
 
   private setConnection (connection?: ConnectionOptions | null): void {
