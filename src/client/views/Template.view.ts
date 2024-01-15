@@ -1,13 +1,13 @@
 import figlet from 'figlet'
 
 export class TemplateView {
-  async showWelcomeTemplate (information: {
+  showWelcomeTemplate (information: {
     author: string
     version: string
     title: string
     description: string
     repositoryUrl: string
-  }): Promise<void> {
+  }): void {
     console.log(figlet.textSync(information.title, {
       font: 'Banner',
       horizontalLayout: 'full',

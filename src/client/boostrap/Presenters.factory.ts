@@ -29,7 +29,6 @@ export class PresentersFactory {
   static makeMainMenuPresenter (): MainMenuPresenter {
     return new MainMenuPresenter(
       new MainMenuView(),
-      PresentersFactory.makeOutputServerPresenter(),
       PresentersFactory.makeSessionsPresenter()
     )
   }

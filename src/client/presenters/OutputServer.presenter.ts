@@ -10,9 +10,11 @@ export class OutputServerPresenter {
 
   }
 
-  async handleServerCreation (): Promise<void> {
-    const { host, port, outputPath } = await this._view.askServerConfiguration()
+  askServerConfiguration (): void {
+    this._view.askServerConfiguration()
+  }
 
+  handleCompileAndBuildServer (host: string, port: number, outputPath: string): void {
     const outputServer = new OutputServer(
       outputPath,
       {
@@ -21,9 +23,13 @@ export class OutputServerPresenter {
       }
     )
 
-    await outputServer.writeSettingsAtTemporarlyDotEnv()
-    await outputServer.compileServer()
+    outputServer.writeSettingsAtTemporarlyDotEnv()
+    outputServer.compileServer()
 
-    await this._serverRepository.save(outputServer)
+    this._serverRepository.save(outputServer).catch((error) => { console.error(error) })
+  }
+
+  handleServerCreation (): void {
+    this._view.askServerConfiguration()
   }
 }

@@ -1,12 +1,10 @@
+import { EventListener } from '../event/EventListener'
+
 const { default: inquirer } = require('fix-esm').require('inquirer')
 
 export class OutputServerView {
-  async askServerConfiguration (): Promise<{
-    host: string
-    port: number
-    outputPath?: string
-  }> {
-    const response = await inquirer.prompt([
+  askServerConfiguration (): void {
+    inquirer.prompt([
       {
         type: 'string',
         message: 'Define the revert host to connect (Ex: 192.168.0.1): ',
@@ -20,11 +18,10 @@ export class OutputServerView {
       {
         type: 'string',
         message: 'Set the server output path (Default is current user folder): ',
-        default: undefined,
         name: 'outputPath'
       }
-    ])
-
-    return response
+    ]).then((response: { host: string, port: number, outputPath: string }) => {
+      EventListener.getEventEmitter().emit('BUILD_SERVER', response.host, response.port, response.outputPath)
+    })
   }
 }

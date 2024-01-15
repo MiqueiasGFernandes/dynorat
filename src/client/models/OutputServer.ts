@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { createHash, randomUUID } from 'node:crypto'
-import { writeFile, readFile } from 'fs/promises'
-import { CommandAsPromiseUtil } from './CommandAsPromise.util'
+import { writeFileSync, readFileSync } from 'fs'
+import { Commander } from './CommandAsPromise.util'
 import { Column, Entity, PrimaryColumn } from 'typeorm'
 
 const BUNDLE_SERVER_COMMAND = 'npm run bundle:server'
@@ -34,7 +34,7 @@ export class OutputServer {
     this.setId()
   }
 
-  async writeSettingsAtTemporarlyDotEnv (): Promise<void> {
+  writeSettingsAtTemporarlyDotEnv (): void {
     const dotEnvLines = [
             `HOST=http://${this.connection.host}`,
             `PORT=${this.connection.port}`
@@ -42,19 +42,19 @@ export class OutputServer {
 
     const dotenvContent = dotEnvLines.join('\n')
 
-    await writeFile(path.resolve(`${SERVER_TEMPLATE_DIRECTORY}`, '.env'), dotenvContent, 'utf-8')
+    writeFileSync(path.resolve(`${SERVER_TEMPLATE_DIRECTORY}`, '.env'), dotenvContent, 'utf-8')
   }
 
-  async compileServer (): Promise<OutputServer> {
-    const bundleOutput = await CommandAsPromiseUtil.commander(BUNDLE_SERVER_COMMAND)
+  compileServer (): this {
+    const bundleOutput = Commander.command(BUNDLE_SERVER_COMMAND)
 
     console.log(bundleOutput)
 
-    const compileOutput = await CommandAsPromiseUtil.commander(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
+    const compileOutput = Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
 
     console.log(compileOutput)
 
-    const fileBuffer = await readFile(this.outputPath)
+    const fileBuffer = readFileSync(this.outputPath)
 
     this.setHash(fileBuffer)
 

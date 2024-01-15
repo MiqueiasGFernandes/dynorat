@@ -1,19 +1,18 @@
-import { CommandAsPromiseUtil } from '../models/CommandAsPromise.util'
+import { EventListener } from '../event/EventListener'
 
 const { default: inquirer } = require('fix-esm').require('inquirer')
 
 export class MainMenuView {
-  async showMainMenu (): Promise<string> {
-    await CommandAsPromiseUtil.commander('clear')
-    const { internalCommand } = await inquirer.prompt([
+  showMainMenu (): void {
+    inquirer.prompt([
       {
         name: 'internalCommand',
         prefix: '',
         sufix: '',
         message: '(dyno)->'
       }
-    ])
-
-    return internalCommand
+    ]).then(({ internalCommand }: { internalCommand: string }) => {
+      EventListener.getEventEmitter().emit('CHOSE_MENU_OPTION', internalCommand)
+    })
   }
 }

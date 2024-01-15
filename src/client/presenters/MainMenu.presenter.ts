@@ -1,26 +1,28 @@
+import { EventListener } from '../event/EventListener'
 import { type MainMenuView } from '../views/MainMenu.view'
-import { type OutputServerPresenter } from './OutputServer.presenter'
 import { type SessionsPresenter } from './ShowSessions.presenter'
 
 export class MainMenuPresenter {
   constructor (
     private readonly _view: MainMenuView,
-    private readonly _outputServerPresenter: OutputServerPresenter,
     private readonly _showSessionsPresenter: SessionsPresenter
   ) {
   }
 
-  async showMainMenu (): Promise<void> {
-    const internalCommand = await this._view.showMainMenu()
+  showMainMenu (): void {
+    this._view.showMainMenu()
+  }
 
+  chooseMenuOptions (internalCommand: string): void {
     switch (internalCommand) {
       case 'generate server':
-        await this._outputServerPresenter.handleServerCreation()
+        EventListener.getEventEmitter().emit('CONFIGURE_SERVER')
         break
       case 'show sessions':
         this._showSessionsPresenter.showSessions()
         break
       default:
+        console.log(internalCommand)
         console.log('Help')
         break
     }
