@@ -4,7 +4,7 @@
   "description": "Dyno Remote administration tool",
   "main": "index.js",
   "scripts": {
-    "preinstall": "nvm install",
+    "preinstall": "nvm install && nvm use",
     "server": "ts-node ./src/server/index.ts",
     "client": "ts-node ./src/client/index.ts",
     "bundle:server": "webpack --config ./src/server-template/webpack.config.js",
