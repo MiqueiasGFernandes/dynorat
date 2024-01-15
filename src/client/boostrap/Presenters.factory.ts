@@ -4,6 +4,7 @@ import { OutputServer } from '../models/OutputServer'
 import { OutputServerView } from '../views/OutputServer.view'
 import { MainMenuPresenter } from '../presenters/MainMenu.presenter'
 import { MainMenuView } from '../views/MainMenu.view'
+import { SessionsPresenter } from '../presenters/ShowSessions.presenter'
 
 export class PresentersFactory {
   private static dataSource: DataSource | null = null
@@ -21,10 +22,15 @@ export class PresentersFactory {
     )
   }
 
+  static makeSessionsPresenter (): SessionsPresenter {
+    return new SessionsPresenter()
+  }
+
   static makeMainMenuPresenter (): MainMenuPresenter {
     return new MainMenuPresenter(
       new MainMenuView(),
-      PresentersFactory.makeOutputServerPresenter()
+      PresentersFactory.makeOutputServerPresenter(),
+      PresentersFactory.makeSessionsPresenter()
     )
   }
 }
