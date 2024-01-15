@@ -1,7 +1,10 @@
 import { exec } from 'child_process';
+import { config } from 'dotenv';
 import { Server } from "socket.io";
 
 async function handle(){
+    config()
+
     const server = new Server()
 
     console.log(process.env.PORT)

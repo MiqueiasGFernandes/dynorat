@@ -5,20 +5,26 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "nvm install",
-    "server": "ts-node ./server/index.ts",
-    "client": "ts-node ./client/index.ts",
-    "build": "webpack --config webpack.config.js",
+    "server": "ts-node ./src/server/index.ts",
+    "client": "ts-node ./src/client/index.ts",
+    "build:server": "webpack --config webpack.config.js",
+    "build:client": "tsc",
     "build:bin:server": "pkg ./build/server/index.js -o ./bin/server"
   },
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
+    "fix-esm": "^1.0.1",
+    "inquirer": "^9.2.12",
+    "prompts": "^2.4.2",
     "socket.io": "^4.7.3",
     "socket.io-client": "^4.7.3",
     "typescript": "^5.3.3"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "@types/prompts": "^2.4.9",
     "@types/socket.io": "^3.0.2",
     "dotenv-webpack": "^8.0.1",
     "ts-loader": "^9.5.1",
