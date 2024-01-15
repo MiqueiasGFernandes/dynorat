@@ -1,40 +1,67 @@
-import { config } from 'dotenv'
-import { Server } from 'socket.io'
+// import { config } from 'dotenv'
+// import { Server } from 'socket.io'
 
-const { default: inquirer } = require('fix-esm').require('inquirer')
+import { DataSource } from 'typeorm'
+import { PresentersFactory } from './boostrap/Presenters.factory'
+import { DatabaseConfig } from './db/Config'
 
-async function connect (): Promise<void> {
-  config()
+// const { default: inquirer } = require('fix-esm').require('inquirer')
 
-  const client = new Server()
+// async function connect (): Promise<void> {
+//   config()
 
-  console.log(process.env.PORT)
+//   const client = new Server()
 
-  const handler = client.listen(Number(process.env.PORT))
+//   console.log(process.env.PORT)
 
-  console.log('Listening...')
+//   const handler = client.listen(Number(process.env.PORT))
 
-  handler.on('connection', (socket) => {
-    console.log('Connected')
+//   console.log('Listening...')
 
-    socket.emit('command', 'echo -n $PS1')
+//   handler.on('connection', (socket) => {
+//     console.log('Connected')
 
-    socket.on('error', (error) => {
-      console.log(error)
-    })
-    socket.on('result', async (data: unknown) => {
-      const { command } = await inquirer.prompt([
-        {
-          name: 'command',
-          prefix: '',
-          sufix: '',
-          message: data
-        }
-      ])
+//     socket.emit('command', 'echo -n $PS1')
 
-      client.emit('command', `${command} && echo -n $PS1`)
-    })
+//     socket.on('error', (error) => {
+//       console.log(error)
+//     })
+//     socket.on('result', async (data: unknown) => {
+//       const { command } = await inquirer.prompt([
+//         {
+//           name: 'command',
+//     })
+//     socket.on('result', async (data: unknown) => {
+//       const { command } = await inquirer.prompt([
+//         {
+//           name: 'command',
+//           prefix: '',
+//           sufix: '',
+//           message: data
+//         }
+//       ])
+
+//       client.emit('command', `${command} && echo -n $PS1`)
+//     })
+//   })
+// }
+
+// connect()
+
+async function start (): Promise<void> {
+  const dataSource = new DataSource(DatabaseConfig.configure())
+
+  await dataSource.initialize().catch((error) => {
+    console.error(error)
   })
+
+  PresentersFactory.setDataSource(dataSource)
+
+  const outputServerPresenter = PresentersFactory.outputServerPresenter()
+  await outputServerPresenter.handleServerCreation()
 }
 
-connect()
+start().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})

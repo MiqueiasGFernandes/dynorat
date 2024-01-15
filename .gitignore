@@ -1,1 +1,3 @@
 node_modules
+src/server-template/build/server
+src/server-template/.env

@@ -7,7 +7,7 @@
     "preinstall": "nvm install",
     "server": "ts-node ./src/server/index.ts",
     "client": "ts-node ./src/client/index.ts",
-    "bundle:server": "webpack --config ./server-template/webpack.config.js",
+    "bundle:server": "webpack --config ./src/server-template/webpack.config.js",
     "build:client": "tsc"
   },
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
