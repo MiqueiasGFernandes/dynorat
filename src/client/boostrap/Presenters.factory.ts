@@ -4,7 +4,7 @@ import { OutputServer } from '../models/OutputServer'
 import { OutputServerView } from '../views/OutputServer.view'
 import { MainMenuPresenter } from '../presenters/MainMenu.presenter'
 import { MainMenuView } from '../views/MainMenu.view'
-import { SessionsPresenter } from '../presenters/ShowSessions.presenter'
+import { SessionsPresenter } from '../presenters/Sessions.presenter'
 
 export class PresentersFactory {
   private static dataSource: DataSource | null = null

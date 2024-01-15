@@ -1,6 +1,6 @@
 import { EventListener } from '../event/EventListener'
 import { type MainMenuView } from '../views/MainMenu.view'
-import { type SessionsPresenter } from './ShowSessions.presenter'
+import { type SessionsPresenter } from './Sessions.presenter'
 
 export class MainMenuPresenter {
   constructor (
