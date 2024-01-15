@@ -1,3 +1,5 @@
+```
+                                                      
  #####   #   #  #    #   ####   #####     ##    ##### 
  #    #   # #   ##   #  #    #  #    #   #  #     #   
  #    #    #    # #  #  #    #  #    #  #    #    #   
@@ -10,7 +12,8 @@
  _ _|   | |_  |   |   |___| |_ ___| |_ ___ 
 | | | | |_ _| |_ _| | |___| . | -_|  _| .'|
  \_/|___|_|_____|_|___|   |___|___|_| |__,|
-
+                                           
+```
 
 > Projeto em desenvolvimento, o Dyno Remote Administration Tool é uma ferramente de administração remote no estilo conexão reversa. No momento, possui suporte apenas para linha de comandos e foi testado apenas em ambientes Linux.
 
@@ -23,12 +26,12 @@ Antes de começar, verifique se você atendeu aos seguintes requisitos:
 - Node 18.19.0
 
 Compatibilidade de Sistemas Operecionais Verificada
-+--------------------------------------------------------------------------------+
+----------------------------------------------------------------------------------
 | *Executável*  | *Linux x86*  | *Linux amd_64* | *Windows x86* | *Windows x86*  |
-+--------------------------------------------------------------------------------+
+|--------------------------------------------------------------------------------|
 | Servidor      |     OK       |      OK        |     NOK       |     NOK        |
 | Cliente       |     NOK      |      NOK       |     NOK       |     NOK        |
-+--------------------------------------------------------------------------------+
+----------------------------------------------------------------------------------
 ## 🚀 Instalando DynoRAT
 
 Para instalar o DynoRAT, siga estas etapas:
