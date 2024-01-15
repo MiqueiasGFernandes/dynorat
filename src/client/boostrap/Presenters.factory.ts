@@ -2,6 +2,8 @@ import { type DataSource } from 'typeorm'
 import { OutputServerPresenter } from '../presenters/OutputServer.presenter'
 import { OutputServer } from '../models/OutputServer'
 import { OutputServerView } from '../views/OutputServer.view'
+import { MainMenuPresenter } from '../presenters/MainMenu.presenter'
+import { MainMenuView } from '../views/MainMenu.view'
 
 export class PresentersFactory {
   private static dataSource: DataSource | null = null
@@ -12,10 +14,17 @@ export class PresentersFactory {
     }
   }
 
-  static outputServerPresenter (): OutputServerPresenter {
+  static makeOutputServerPresenter (): OutputServerPresenter {
     return new OutputServerPresenter(
-      this.dataSource!.getRepository(OutputServer),
+      this.dataSource.getRepository(OutputServer),
       new OutputServerView()
+    )
+  }
+
+  static makeMainMenuPresenter (): MainMenuPresenter {
+    return new MainMenuPresenter(
+      new MainMenuView(),
+      PresentersFactory.makeOutputServerPresenter()
     )
   }
 }

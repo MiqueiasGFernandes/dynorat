@@ -67,9 +67,9 @@ async function start (): Promise<void> {
 
   PresentersFactory.setDataSource(dataSource)
 
-  const outputServerPresenter = PresentersFactory.outputServerPresenter()
+  const mainMenuPresenter = PresentersFactory.makeMainMenuPresenter()
 
-  await outputServerPresenter.handleServerCreation()
+  await mainMenuPresenter.showMainMenu()
 }
 
 start().catch((error) => {

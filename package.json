@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
+    "emittery": "^1.0.1",
     "figlet": "^1.7.0",
     "fix-esm": "^1.0.1",
     "inquirer": "^9.2.12",
