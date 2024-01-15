@@ -2,7 +2,10 @@
   "name": "dynorat",
   "version": "0.1.0",
   "description": "Dyno Remote administration tool",
-  "main": "index.js",
+  "main": "index.ts",
+  "repository": {
+    "url": "https://github.com/MiqueiasGFernandes/dynorat.git "
+  },
   "scripts": {
     "preinstall": "nvm install && nvm use",
     "server": "ts-node ./src/server/index.ts",
@@ -14,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.3.1",
+    "figlet": "^1.7.0",
     "fix-esm": "^1.0.1",
     "inquirer": "^9.2.12",
     "prompts": "^2.4.2",
@@ -23,6 +27,7 @@
     "typeorm": "^0.3.19"
   },
   "devDependencies": {
+    "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/prompts": "^2.4.9",
     "@types/socket.io": "^3.0.2",

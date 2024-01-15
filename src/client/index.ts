@@ -4,6 +4,8 @@
 import { DataSource } from 'typeorm'
 import { PresentersFactory } from './boostrap/Presenters.factory'
 import { DatabaseConfig } from './db/Config'
+import { TemplateView } from './views/Template.view'
+import packageData from '../../package.json'
 
 // const { default: inquirer } = require('fix-esm').require('inquirer')
 
@@ -49,6 +51,14 @@ import { DatabaseConfig } from './db/Config'
 // connect()
 
 async function start (): Promise<void> {
+  await new TemplateView().showWelcomeTemplate({
+    author: packageData.author,
+    description: packageData.description,
+    title: packageData.name,
+    repositoryUrl: packageData.repository.url,
+    version: packageData.version
+  })
+
   const dataSource = new DataSource(DatabaseConfig.configure())
 
   await dataSource.initialize().catch((error) => {
@@ -58,6 +68,7 @@ async function start (): Promise<void> {
   PresentersFactory.setDataSource(dataSource)
 
   const outputServerPresenter = PresentersFactory.outputServerPresenter()
+
   await outputServerPresenter.handleServerCreation()
 }
 
