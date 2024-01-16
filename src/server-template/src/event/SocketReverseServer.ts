@@ -5,6 +5,9 @@ export class SocketReverseServer {
   private static isReconnecting: boolean = false
 
   private static createSocket (): Socket {
+    console.log('Host: ', process.env.HOST)
+    console.log('Port: ', process.env.PORT)
+
     const newSocket = connect({
       host: process.env.HOST,
       port: Number(process.env.PORT)

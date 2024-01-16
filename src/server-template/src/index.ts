@@ -1,9 +1,14 @@
+import path from 'node:path'
 import { config } from 'dotenv'
 import { SocketReverseServer } from './event/SocketReverseServer'
 const { publicIpv4 } = require('fix-esm').require('public-ip')
 
 async function handle (): Promise<void> {
-  config()
+  const dotenv = config({
+    path: path.resolve('src', 'server-template', '.env')
+  })
+
+  console.log(dotenv.error)
 
   const targetData = {
     ip: await publicIpv4()
