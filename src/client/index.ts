@@ -1,9 +1,10 @@
 import { DataSource } from 'typeorm'
+import packageData from '../../package.json'
 import { PresentersFactory } from './boostrap/Presenters.factory'
 import { DatabaseConfig } from './db/Config'
-import { TemplateView } from './views/Template.view'
-import packageData from '../../package.json'
 import { EventListener } from './event/EventListener'
+import { TemplateView } from './views/Template.view'
+
 const dataSource = new DataSource(DatabaseConfig.configure())
 
 void dataSource.initialize().catch((error) => {

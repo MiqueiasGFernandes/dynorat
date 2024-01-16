@@ -3,7 +3,7 @@ const Dotenv = require('dotenv-webpack')
 
 module.exports = {
   target: 'node',
-  entry: path.resolve(__dirname, 'index.ts'),
+  entry: path.resolve(__dirname, 'src', 'index.ts'),
   plugins: [
     new Dotenv({
       path: path.resolve(__dirname, '.env')

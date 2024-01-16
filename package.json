@@ -8,7 +8,7 @@
   },
   "scripts": {
     "preinstall": "nvm install && nvm use",
-    "server": "ts-node ./src/server/index.ts",
+    "server": "ts-node ./src/server-template/src/index.ts",
     "client": "ts-node ./src/client/index.ts",
     "bundle:server": "webpack --config ./src/server-template/webpack.config.js",
     "build:client": "tsc"
@@ -23,6 +23,7 @@
     "fix-esm": "^1.0.1",
     "inquirer": "^9.2.12",
     "prompts": "^2.4.2",
+    "public-ip": "^6.0.1",
     "socket.io": "^4.7.3",
     "socket.io-client": "^4.7.3",
     "sqlite3": "^5.1.7",
@@ -33,6 +34,7 @@
     "@types/figlet": "^1.5.8",
     "@types/inquirer": "^9.0.7",
     "@types/prompts": "^2.4.9",
+    "@types/public-ip": "^3.1.0",
     "@types/socket.io": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "dotenv-webpack": "^8.0.1",

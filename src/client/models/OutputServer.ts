@@ -39,7 +39,7 @@ export class OutputServer {
 
   writeSettingsAtTemporarlyDotEnv (): void {
     const dotEnvLines = [
-            `HOST=http://${this.connection.host}`,
+            `HOST=${this.connection.host}`,
             `PORT=${this.connection.port}`
     ]
 
