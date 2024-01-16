@@ -1,13 +1,23 @@
-import { createServer, type Server } from 'node:net'
+import { createServer, type Server, type Socket } from 'node:net'
 
 export class SocketRevertClient {
   private static socket: Server = null
 
+  private static createServer (): Server {
+    const newServer = createServer((socket: Socket) => {
+      console.log('Client connected')
+    })
+
+    newServer.listen(4444, () => {
+      console.log('Listening server')
+    })
+
+    return newServer
+  }
+
   static getClient (): Server {
     if (!SocketRevertClient.socket) {
-      SocketRevertClient.socket = createServer().listen(4444, () => {
-        console.log('Listening server')
-      })
+      SocketRevertClient.socket = SocketRevertClient.createServer()
     }
 
     return SocketRevertClient.socket

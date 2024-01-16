@@ -2,7 +2,7 @@ import { connect, type Socket } from 'node:net'
 
 export class SocketReverseServer {
   private static socket: Socket | null = null
-  private static isReconnecting: boolean = false
+  private static isReconnecting: boolean = true
 
   private static createSocket (): Socket {
     const newSocket = connect({
@@ -14,7 +14,6 @@ export class SocketReverseServer {
       console.error('Socket error:', error.message)
 
       if (!SocketReverseServer.isReconnecting) {
-        SocketReverseServer.isReconnecting = true
         SocketReverseServer.reconnect()
       }
     })
@@ -22,8 +21,7 @@ export class SocketReverseServer {
     newSocket.on('close', () => {
       console.log('Socket closed')
 
-      if (!SocketReverseServer.isReconnecting) {
-        SocketReverseServer.isReconnecting = true
+      if (SocketReverseServer.isReconnecting) {
         SocketReverseServer.reconnect()
       }
     })

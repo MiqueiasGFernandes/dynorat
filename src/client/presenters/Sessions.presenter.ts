@@ -6,10 +6,6 @@ export class SessionsPresenter {
       head: ['# ID', 'IP Address', 'Port', 'Country', 'OS', 'User']
     })
 
-    SocketRevertClient.on('connect', () => {
-      console.log('Client connected')
-    })
-
     SocketRevertClient
       .on('target_data', (data) => {
         console.log('connected')
