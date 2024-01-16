@@ -2,13 +2,33 @@ import { connect, type Socket } from 'node:net'
 
 export class SocketReverseServer {
   private static socket: Socket = null
+  private static isReconnecting: boolean = false
 
-  static getServer (): Socket {
+  private static createSocket (): Socket {
+    const newSocket = connect({
+      host: process.env.HOST,
+      port: Number(process.env.PORT)
+    })
+
+    newSocket.on('error', (error) => {
+      console.error('Socket error:', error.message)
+
+      if (!SocketReverseServer.isReconnecting) {
+        console.log('Reconnecting...')
+        SocketReverseServer.isReconnecting = true
+        setTimeout(() => {
+          SocketReverseServer.isReconnecting = false
+          SocketReverseServer.createSocket()
+        }, 1000)
+      }
+    })
+
+    return newSocket
+  }
+
+  private static getServer (): Socket {
     if (!SocketReverseServer.socket) {
-      SocketReverseServer.socket = connect({
-        host: process.env.HOST,
-        port: Number(process.env.PORT)
-      })
+      SocketReverseServer.socket = SocketReverseServer.createSocket()
     }
 
     return SocketReverseServer.socket
