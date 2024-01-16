@@ -1,13 +1,10 @@
 import { connect, type Socket } from 'node:net'
 
 export class SocketReverseServer {
-  private static socket: Socket = null
+  private static socket: Socket | null = null
   private static isReconnecting: boolean = false
 
   private static createSocket (): Socket {
-    console.log('Host: ', process.env.HOST)
-    console.log('Port: ', process.env.PORT)
-
     const newSocket = connect({
       host: process.env.HOST,
       port: Number(process.env.PORT)
@@ -17,19 +14,35 @@ export class SocketReverseServer {
       console.error('Socket error:', error.message)
 
       if (!SocketReverseServer.isReconnecting) {
-        console.log('Reconnecting...')
         SocketReverseServer.isReconnecting = true
-        setTimeout(() => {
-          SocketReverseServer.isReconnecting = false
-          SocketReverseServer.createSocket()
-        }, 1000)
+        SocketReverseServer.reconnect()
       }
+    })
+
+    newSocket.on('close', () => {
+      console.log('Socket closed')
+
+      if (!SocketReverseServer.isReconnecting) {
+        SocketReverseServer.isReconnecting = true
+        SocketReverseServer.reconnect()
+      }
+    })
+
+    newSocket.on('connect', () => {
+      console.log('Server connected!')
+      SocketReverseServer.isReconnecting = false
     })
 
     return newSocket
   }
 
-  private static getServer (): Socket {
+  private static reconnect (): void {
+    setTimeout(() => {
+      SocketReverseServer.socket = SocketReverseServer.createSocket()
+    }, 1000)
+  }
+
+  static getServer (): Socket {
     if (!SocketReverseServer.socket) {
       SocketReverseServer.socket = SocketReverseServer.createSocket()
     }
@@ -44,14 +57,22 @@ export class SocketReverseServer {
   }
 
   static emit (eventName: string, data: unknown): SocketReverseServer {
-    SocketReverseServer.getServer().emit(eventName, data)
+    const server = SocketReverseServer.getServer()
+
+    if (server && server.writable) {
+      server.emit(eventName, data)
+    } else {
+      console.error('Socket not writable. Reconnecting...')
+      SocketReverseServer.reconnect()
+    }
 
     return SocketReverseServer
   }
 
   static close (): void {
-    SocketReverseServer.getServer().end()
-
-    SocketReverseServer.socket = null
+    if (SocketReverseServer.socket) {
+      SocketReverseServer.socket.end()
+      SocketReverseServer.socket = null
+    }
   }
 }

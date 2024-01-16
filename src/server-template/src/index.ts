@@ -4,19 +4,18 @@ import { SocketReverseServer } from './event/SocketReverseServer'
 const { publicIpv4 } = require('fix-esm').require('public-ip')
 
 async function handle (): Promise<void> {
-  const dotenv = config({
+  config({
     path: path.resolve('src', 'server-template', '.env')
   })
-
-  console.log(dotenv.error)
 
   const targetData = {
     ip: await publicIpv4()
   }
 
-  console.log(targetData)
-
-  SocketReverseServer.emit('target_data', targetData)
+  SocketReverseServer.on('connect', () => {
+    console.log('Server connected!')
+    SocketReverseServer.emit('target_data', targetData)
+  })
 
   // socket.on('connect', async () => {
   //   socket.on('command', (command: string) => {
