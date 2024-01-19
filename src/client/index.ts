@@ -1,3 +1,4 @@
+import { createServer, type Server } from 'node:net'
 import { DataSource } from 'typeorm'
 import packageData from '../../package.json'
 import { PresentersFactory } from './boostrap/Presenters.factory'
@@ -6,6 +7,14 @@ import { EventListener } from './event/EventListener'
 import { TemplateView } from './views/Template.view'
 
 const dataSource = new DataSource(DatabaseConfig.configure())
+
+function connectToClient (): Server {
+  const newServer = createServer()
+
+  newServer.listen(4444)
+
+  return newServer
+}
 
 void dataSource.initialize().catch((error) => {
   console.error(error)
@@ -21,10 +30,14 @@ void dataSource.initialize().catch((error) => {
 
   PresentersFactory.setDataSource(dataSource)
 
+  const socket = connectToClient()
+
   const mainMenuPresenter = PresentersFactory.makeMainMenuPresenter()
   const outputServerPresenter = PresentersFactory.makeOutputServerPresenter()
 
   const eventEmitter = EventListener.getEventEmitter()
+
+  mainMenuPresenter.setSocket(socket)
 
   eventEmitter.on('CHOSE_MENU_OPTION', mainMenuPresenter.chooseMenuOptions.bind(mainMenuPresenter))
   eventEmitter.on('BUILD_SERVER', outputServerPresenter.handleCompileAndBuildServer.bind(outputServerPresenter))

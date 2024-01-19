@@ -1,13 +1,13 @@
 import Table from 'cli-table'
-import { SocketRevertClient } from '../event/SocketReverseClient'
+import { type Server } from 'node:net'
 export class SessionsPresenter {
-  showSessions (): void {
+  showSessions (socket: Server): void {
     const table = new Table({
       head: ['# ID', 'IP Address', 'Port', 'Country', 'OS', 'User']
     })
 
-    SocketRevertClient
-      .on('target_data', (data) => {
+    socket
+      .on('data', (data) => {
         console.log('connected')
         console.log(data)
       })
