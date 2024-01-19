@@ -16,6 +16,7 @@
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.5",
     "cli-table": "^0.3.11",
     "dotenv": "^16.3.1",
     "emittery": "^1.0.1",
