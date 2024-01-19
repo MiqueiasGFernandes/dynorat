@@ -9,7 +9,11 @@ import { TemplateView } from './views/Template.view'
 const dataSource = new DataSource(DatabaseConfig.configure())
 
 function connectToClient (): Server {
-  const newServer = createServer()
+  const newServer = createServer((socket) => {
+    socket.on('data', (data) => {
+      console.log(data.toString())
+    })
+  })
 
   newServer.listen(4444)
 

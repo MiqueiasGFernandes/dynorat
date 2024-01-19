@@ -9,27 +9,33 @@ config({
 })
 
 let socket: Socket
+let isConnected = false
 
 function connectSocket (): void {
-  socket = connect({
-    host: process.env.HOST,
-    port: Number(process.env.PORT)
-  })
+  if (!isConnected) {
+    socket = connect({
+      host: process.env.HOST,
+      port: Number(process.env.PORT),
+      allowHalfOpen: true,
+      keepAlive: true
+    })
+  }
 
   socket.on('error', (err) => {
-    console.clear()
+    isConnected = false
+
     console.error(`Error in connection: ${err.message}`)
     setTimeout(connectSocket, 1000)
   })
 
   socket.on('close', () => {
-    console.clear()
+    isConnected = false
     console.log('Socket closed')
     setTimeout(connectSocket, 1000)
   })
 
-  socket.on('connect', async () => {
-    console.clear()
+  socket.on('ready', async () => {
+    isConnected = true
 
     const ip: string = await publicIpv4()
 
