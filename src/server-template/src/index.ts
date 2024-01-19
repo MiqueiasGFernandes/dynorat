@@ -25,7 +25,6 @@ function connectSocket (): void {
 
   socket.on('error', () => {
     isConnected = false
-    console.log('serve error: ', new Date().toISOString())
     setTimeout(connectSocket, 5000)
   })
 
@@ -47,11 +46,8 @@ function connectSocket (): void {
       os: os.type()
     }
 
-    console.log(data)
-
     socket.write(Buffer.from(JSON.stringify(data)))
 
-    console.log('Server connected!')
     isConnected = true
   })
 }
