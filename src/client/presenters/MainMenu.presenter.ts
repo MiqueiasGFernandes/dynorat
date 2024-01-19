@@ -54,6 +54,12 @@ export class MainMenuPresenter {
         EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
       })
 
+    program.command('exit')
+      .action(() => {
+        console.log('Saindo...')
+        process.exit(0)
+      })
+
     program.parse(['', '', ...internalCommand.split(' ')])
   }
 }

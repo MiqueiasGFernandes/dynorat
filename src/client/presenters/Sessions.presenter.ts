@@ -1,6 +1,5 @@
 import Table from 'cli-table'
 import { type Connection } from '../models/Connection'
-import { EventListener } from '../event/EventListener'
 export class SessionsPresenter {
   private _connections: Connection[]
 
