@@ -2,14 +2,15 @@ import { EventListener } from '../event/EventListener'
 import { type Connection } from '../models/Connection'
 import { type MainMenuView } from '../views/MainMenu.view'
 import { type SessionsPresenter } from './Sessions.presenter'
+import { Command } from 'commander'
 
 export class MainMenuPresenter {
   private _connections: Connection[]
+
   constructor (
     private readonly _view: MainMenuView,
     private readonly _showSessionsPresenter: SessionsPresenter
-  ) {
-  }
+  ) {}
 
   setConnections (connections: Connection[]): void {
     this._connections = connections
@@ -20,22 +21,24 @@ export class MainMenuPresenter {
   }
 
   chooseMenuOptions (internalCommand: string): void {
-    switch (internalCommand) {
-      case 'generate server':
-        EventListener.getEventEmitter().emit('CONFIGURE_SERVER')
-        break
-      case 'sessions show':
-        this._showSessionsPresenter.showSessions(this._connections)
-        break
-      case 'clear':
-        console.clear()
+    const program = new Command()
 
-        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
-        break
-      default:
-        console.log(internalCommand)
-        console.log('Help')
-        break
-    }
+    program
+      .command('help')
+      .description('Help option')
+      .action(() => {
+        console.log('Help command text here...')
+      })
+
+    program
+      .command('clear')
+      .description('Clean the CLI display')
+      .action(() => {
+        console.clear()
+      })
+
+    program.parse(['', '', ...internalCommand.split(' ')])
+
+    EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
   }
 }
