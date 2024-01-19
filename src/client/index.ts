@@ -42,15 +42,17 @@ void dataSource.initialize().catch((error) => {
 
   const mainMenuPresenter = PresentersFactory.makeMainMenuPresenter()
   const outputServerPresenter = PresentersFactory.makeOutputServerPresenter()
+  const sessionsPresenter = PresentersFactory.makeSessionsPresenter()
 
   const eventEmitter = EventListener.getEventEmitter()
 
-  mainMenuPresenter.setConnections(connections)
+  sessionsPresenter.setConnections(connections)
 
   eventEmitter.on('CHOSE_MENU_OPTION', mainMenuPresenter.chooseMenuOptions.bind(mainMenuPresenter))
   eventEmitter.on('BUILD_SERVER', outputServerPresenter.handleCompileAndBuildServer.bind(outputServerPresenter))
   eventEmitter.on('CONFIGURE_SERVER', outputServerPresenter.handleServerCreation.bind(outputServerPresenter))
   eventEmitter.on('GO_TO_MAIN_MENU', mainMenuPresenter.showMainMenu.bind(mainMenuPresenter))
+  eventEmitter.on('SHOW_SESSIONS', sessionsPresenter.showSessions.bind(sessionsPresenter))
 
   eventEmitter.emit('GO_TO_MAIN_MENU')
 })
