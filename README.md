@@ -15,7 +15,8 @@
                                            
 ```
 
-> Projeto em desenvolvimento, o Dyno Remote Administration Tool é uma ferramente de administração remote no estilo conexão reversa. No momento, possui suporte apenas para linha de comandos e foi testado apenas em ambientes Linux.
+> Projeto em desenvolvimento, o Dyno Remote Administration Tool é uma ferramenta de administração remota no estilo conexão reversa. No momento, possui suporte apenas para linha de comandos e foi testado apenas em ambientes Linux.
+> OBSERVAÇÂO: Ferramenta deve ser utilizada apenas em ambientes controlados, não apoiamos qualquer prática ilegal por parte dos utilizadores
 
 
 ## 💻 Pré-requisitos
@@ -97,7 +98,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [ ] Melhorar a variedade de comandos para navegação
 - [ ] Geração de binário para distribuição (Build compilada)
 - [ ] Melhoria na exibição das mensagens em CLI
-- [ ] Testes de compatibilidade em ambientes Microsoft Windows
+- [ ] Permitir suporte para ambientes microsoft Windows
 - [ ] Configuração de servidor para persistência na máquina de instalação
 - [ ] Exploração de escalação de privilégio em ambientes Windows/Linux
 - [ ] Monitoramento de teclas, tela e upload/download de arquivos entre cliente e servidor
