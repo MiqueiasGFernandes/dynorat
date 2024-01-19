@@ -5,13 +5,17 @@ import { PresentersFactory } from './boostrap/Presenters.factory'
 import { DatabaseConfig } from './db/Config'
 import { EventListener } from './event/EventListener'
 import { TemplateView } from './views/Template.view'
+import { type Connection } from './models/Connection'
 
 const dataSource = new DataSource(DatabaseConfig.configure())
+const connections: Connection[] = []
 
 function connectToClient (): Server {
   const newServer = createServer((socket) => {
     socket.on('data', (data) => {
-      console.log(data.toString())
+      const jsonData: Record<string, string> = JSON.parse(data.toString())
+
+      connections.push(jsonData as unknown as Connection)
     })
   })
 
@@ -34,14 +38,14 @@ void dataSource.initialize().catch((error) => {
 
   PresentersFactory.setDataSource(dataSource)
 
-  const socket = connectToClient()
+  connectToClient()
 
   const mainMenuPresenter = PresentersFactory.makeMainMenuPresenter()
   const outputServerPresenter = PresentersFactory.makeOutputServerPresenter()
 
   const eventEmitter = EventListener.getEventEmitter()
 
-  mainMenuPresenter.setSocket(socket)
+  mainMenuPresenter.setConnections(connections)
 
   eventEmitter.on('CHOSE_MENU_OPTION', mainMenuPresenter.chooseMenuOptions.bind(mainMenuPresenter))
   eventEmitter.on('BUILD_SERVER', outputServerPresenter.handleCompileAndBuildServer.bind(outputServerPresenter))

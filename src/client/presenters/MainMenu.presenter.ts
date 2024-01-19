@@ -1,18 +1,19 @@
 import { EventListener } from '../event/EventListener'
+import { type Connection } from '../models/Connection'
 import { type MainMenuView } from '../views/MainMenu.view'
 import { type SessionsPresenter } from './Sessions.presenter'
 import { type Server } from 'node:net'
 
 export class MainMenuPresenter {
-  private _socket: Server
+  private _connections: Connection[]
   constructor (
     private readonly _view: MainMenuView,
     private readonly _showSessionsPresenter: SessionsPresenter
   ) {
   }
 
-  setSocket (socket: Server): void {
-    this._socket = socket
+  setConnections (connections: Connection[]): void {
+    this._connections = connections
   }
 
   showMainMenu (): void {
@@ -24,8 +25,8 @@ export class MainMenuPresenter {
       case 'generate server':
         EventListener.getEventEmitter().emit('CONFIGURE_SERVER')
         break
-      case 'show sessions':
-        this._showSessionsPresenter.showSessions(this._socket)
+      case 'sessions show':
+        this._showSessionsPresenter.showSessions(this._connections)
         break
       default:
         console.log(internalCommand)
