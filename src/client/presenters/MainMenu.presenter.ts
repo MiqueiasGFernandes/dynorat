@@ -28,6 +28,11 @@ export class MainMenuPresenter {
       case 'sessions show':
         this._showSessionsPresenter.showSessions(this._connections)
         break
+      case 'clear':
+        console.clear()
+
+        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+        break
       default:
         console.log(internalCommand)
         console.log('Help')
