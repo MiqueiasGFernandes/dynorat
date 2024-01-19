@@ -2,7 +2,6 @@ import { EventListener } from '../event/EventListener'
 import { type Connection } from '../models/Connection'
 import { type MainMenuView } from '../views/MainMenu.view'
 import { type SessionsPresenter } from './Sessions.presenter'
-import { type Server } from 'node:net'
 
 export class MainMenuPresenter {
   private _connections: Connection[]
