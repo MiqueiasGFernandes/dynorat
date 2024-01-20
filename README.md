@@ -94,7 +94,7 @@ Esse projeto está sob licença MIT. Veja o arquivo [LICENÇA](LICENSE.md) para 
 ## Ajustes e melhorias
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
-- [ ] Listagem e interação com diferentes sessões
+- [x] Listagem e interação com diferentes sessões
 - [ ] Melhorar a variedade de comandos para navegação
 - [ ] Geração de binário para distribuição (Build compilada)
 - [ ] Melhoria na exibição das mensagens em CLI
