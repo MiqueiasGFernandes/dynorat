@@ -46,6 +46,11 @@ export class SessionsPresenter {
         message: prefix
       }
     ]).then(({ command }: { command: string }) => {
+      if (command === 'exit') {
+        console.log('Exiting from session...')
+        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+        return
+      }
       EventListener.getEventEmitter().emit('RUN_SESSION_CMD', command)
     })
   }
