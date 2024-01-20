@@ -28,4 +28,10 @@ export class Connection {
       data: cmd
     }))
   }
+
+  kill (): void {
+    this.socket.write(JSON.stringify({
+      type: 'KILL'
+    }))
+  }
 }

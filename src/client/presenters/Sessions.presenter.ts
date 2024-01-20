@@ -10,14 +10,26 @@ export class SessionsPresenter {
     this._connections = connections
   }
 
-  interact (id: number): void {
+  setCurrentSessionConnection (id: number): void {
     this._sessionConnection = this._connections.find((item) => item.id === id)
+  }
+
+  interact (id: number): void {
+    this.setCurrentSessionConnection(id)
 
     this._sessionConnection.interact()
   }
 
   runSessionCommand (cmd: string): void {
     this._sessionConnection.runCommand(cmd)
+  }
+
+  killSession (id: number): void {
+    this.setCurrentSessionConnection(id)
+
+    this._sessionConnection.kill()
+
+    EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
   }
 
   showSessions (): void {

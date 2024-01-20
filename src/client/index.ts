@@ -11,7 +11,7 @@ import { Connection } from './models/Connection'
 import { TemplateView } from './views/Template.view'
 
 const dataSource = new DataSource(DatabaseConfig.configure())
-const connections: Connection[] = []
+let connections: Connection[] = []
 
 function connectToClient (eventEmitter: EventEmitter): Server {
   let connectionId: number = 1
@@ -90,6 +90,15 @@ void dataSource.initialize().catch((error) => {
   eventEmitter.on('INTERACT_SESSION', sessionsPresenter.interact.bind(sessionsPresenter))
   eventEmitter.on('INIT_SESSION_CMD', sessionsPresenter.initializeSessionCmd.bind(sessionsPresenter))
   eventEmitter.on('RUN_SESSION_CMD', sessionsPresenter.runSessionCommand.bind(sessionsPresenter))
+  eventEmitter.on('KILL_SESSION', (id: number) => {
+    sessionsPresenter.killSession(id)
+
+    const newConnectionsList = connections.filter((item) => item.id !== id)
+
+    connections = newConnectionsList
+
+    sessionsPresenter.setConnections(newConnectionsList)
+  })
 
   eventEmitter.emit('GO_TO_MAIN_MENU')
 })

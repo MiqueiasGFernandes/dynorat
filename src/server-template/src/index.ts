@@ -29,6 +29,10 @@ function connectSocket (): void {
     setTimeout(connectSocket, 5000)
   })
 
+  socket.on('end', () => {
+    process.exit(1)
+  })
+
   socket.on('ready', async () => {
     const ip: string = await publicIpv4()
     const ipModel = new Ip(ip)
@@ -78,6 +82,8 @@ function connectSocket (): void {
           })
         })
         break
+      case 'KILL':
+        socket.emit('end')
       default:
         break
     }

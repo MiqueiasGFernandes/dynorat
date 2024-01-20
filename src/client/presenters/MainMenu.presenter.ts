@@ -45,15 +45,9 @@ export class MainMenuPresenter {
       .option('-i, --interact <id>', 'Interact with session by id', (id) => {
         EventListener.getEventEmitter().emit('INTERACT_SESSION', Number(id))
       })
-      // .argument('<id>', 'ID of connection')
-      // .action((options) => {
-      //   if (options.list) {
-      //     EventListener.getEventEmitter().emit('SHOW_SESSIONS')
-      //   }
-      //   if (options.interact) {
-      //     EventListener.getEventEmitter().emit('INTERACT_SESSION', options.id)
-      //   }
-      // })
+      .option('-k, --kill <id>', 'Kill session', (id) => {
+        EventListener.getEventEmitter().emit('KILL_SESSION', Number(id))
+      })
 
     program.command('exit').action(() => {
       console.log('Saindo...')
