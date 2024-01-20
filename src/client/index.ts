@@ -46,6 +46,7 @@ function connectToClient (eventEmitter: EventEmitter): Server {
           break
         case 'COMMAND_RESPONSE':
           console.log(jsonData.data)
+          EventListener.getEventEmitter().emit('INIT_SESSION_CMD')
           break
         default:
           break

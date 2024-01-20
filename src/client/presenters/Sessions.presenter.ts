@@ -47,7 +47,6 @@ export class SessionsPresenter {
       }
     ]).then(({ command }: { command: string }) => {
       EventListener.getEventEmitter().emit('RUN_SESSION_CMD', command)
-      EventListener.getEventEmitter().emit('INIT_SESSION_CMD', command)
     })
   }
 }
