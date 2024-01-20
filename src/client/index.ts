@@ -20,35 +20,39 @@ function connectToClient (eventEmitter: EventEmitter): Server {
     socket.on('data', (data) => {
       const jsonData = JSON.parse(data.toString())
 
-      switch (jsonData.type) {
-        case 'INFO':
-          const connection = new Connection(
-            connectionId,
-            jsonData.data.ip,
-            jsonData.data.username,
-            jsonData.data.hostname,
-            jsonData.data.country,
-            jsonData.data.lat,
-            jsonData.data.lon,
-            jsonData.data.regionName,
-            jsonData.data.cpu,
-            jsonData.data.os,
-            socket
-          )
+      const hasSameConnection = connections.find((connection) => connection.ip === jsonData.data.ip)
+      if (!hasSameConnection) {
+        switch (jsonData.type) {
+          case 'INFO':
 
-          connections.push(connection)
-          connectionId += connectionId
-          break
+            const connection = new Connection(
+              connectionId,
+              jsonData.data.ip,
+              jsonData.data.username,
+              jsonData.data.hostname,
+              jsonData.data.country,
+              jsonData.data.lat,
+              jsonData.data.lon,
+              jsonData.data.regionName,
+              jsonData.data.cpu,
+              jsonData.data.os,
+              socket
+            )
 
-        case 'INIT':
-          eventEmitter.emit('INIT_SESSION_CMD', jsonData.data)
-          break
-        case 'COMMAND_RESPONSE':
-          console.log(jsonData.data)
-          EventListener.getEventEmitter().emit('INIT_SESSION_CMD', jsonData.prefix)
-          break
-        default:
-          break
+            connections.push(connection)
+            connectionId += connectionId
+            break
+
+          case 'INIT':
+            eventEmitter.emit('INIT_SESSION_CMD', jsonData.data)
+            break
+          case 'COMMAND_RESPONSE':
+            console.log(jsonData.data)
+            EventListener.getEventEmitter().emit('INIT_SESSION_CMD', jsonData.prefix)
+            break
+          default:
+            break
+        }
       }
     })
   })
