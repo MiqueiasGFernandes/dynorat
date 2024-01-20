@@ -68,11 +68,14 @@ function connectSocket (): void {
         })
         break
       case 'COMMAND':
-        exec(payload.data as string, (_error, stdout) => {
-          socket.write(JSON.stringify({
-            data: stdout,
-            type: 'COMMAND_RESPONSE'
-          }))
+        exec(`${payload.data}`, (_error, stdout) => {
+          exec('echo -n $PS1', (_e, prefix) => {
+            socket.write(JSON.stringify({
+              data: stdout,
+              prefix,
+              type: 'COMMAND_RESPONSE'
+            }))
+          })
         })
         break
       default:

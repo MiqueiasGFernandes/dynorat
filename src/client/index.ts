@@ -1,15 +1,14 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import { type EventEmitter } from 'node:events'
 import { createServer, type Server } from 'node:net'
 import { DataSource } from 'typeorm'
 import packageData from '../../package.json'
 import { PresentersFactory } from './boostrap/Presenters.factory'
 import { DatabaseConfig } from './db/Config'
 import { EventListener } from './event/EventListener'
-import { TemplateView } from './views/Template.view'
 import { Connection } from './models/Connection'
-import { type EventType } from '../shared/EventType'
-import { type EventEmitter } from 'node:events'
+import { TemplateView } from './views/Template.view'
 
 const dataSource = new DataSource(DatabaseConfig.configure())
 const connections: Connection[] = []
@@ -46,7 +45,7 @@ function connectToClient (eventEmitter: EventEmitter): Server {
           break
         case 'COMMAND_RESPONSE':
           console.log(jsonData.data)
-          EventListener.getEventEmitter().emit('INIT_SESSION_CMD')
+          EventListener.getEventEmitter().emit('INIT_SESSION_CMD', jsonData.prefix)
           break
         default:
           break
