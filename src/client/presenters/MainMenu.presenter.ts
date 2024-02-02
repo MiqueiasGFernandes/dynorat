@@ -14,12 +14,9 @@ export class MainMenuPresenter {
 
     program.usage('[command] [options]')
 
-    program
-      .command('help')
-      .description('Help option')
-      .action(() => {
-        console.log('Help command text here...')
-      })
+    program.exitOverride(() => {
+      EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+    })
 
     program
       .command('clear')
@@ -54,6 +51,10 @@ export class MainMenuPresenter {
       process.exit(0)
     })
 
-    program.parse(['', '', ...internalCommand.split(' ')])
+    try {
+      program.parse(['', '', ...internalCommand.split(' ')])
+    } catch (error) {
+      EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+    }
   }
 }
