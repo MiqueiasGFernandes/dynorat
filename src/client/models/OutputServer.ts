@@ -46,25 +46,33 @@ export class OutputServer {
     const dotenvContent = dotEnvLines.join('\n')
 
     writeFileSync(path.resolve(`${SERVER_TEMPLATE_DIRECTORY}`, '.env'), dotenvContent, 'utf-8')
+    console.log('Writing preferences into output server...')
   }
 
   compileServer (): void {
+    console.log('Bundling server code into single file...')
+
     Commander.command(BUNDLE_SERVER_COMMAND)
 
-    const commandOutput = Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
+    console.log('Compiling server into executable file...')
 
-    console.log(commandOutput)
+    Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
+
+    console.log('Generating file hash...')
 
     const fileBuffer = readFileSync(this.outputPath)
 
     this.setHash(fileBuffer)
 
+    console.log('Saving the file hash into history...')
+
     void this._serverRepository
       .save(this)
       .catch((error) => { console.error(error) })
-      .then(() => [
+      .then(() => {
+        console.log('Output server successfully generated!')
         EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
-      ])
+      })
   }
 
   private setConnection (connection?: ConnectionOptions | null): void {
