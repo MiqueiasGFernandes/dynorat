@@ -4,7 +4,11 @@ import { type MainMenuView } from '../views/MainMenu.view'
 import { GENERAL_HELP_TEXT } from '../constants'
 
 export class MainMenuPresenter {
-  constructor (private readonly _view: MainMenuView) {}
+  private readonly defaultCommands = [
+    'clear', 'exit', 'help'
+  ]
+
+  constructor (private readonly _view: MainMenuView) { }
 
   showMainMenu (): void {
     this._view.showMainMenu()
@@ -40,7 +44,12 @@ export class MainMenuPresenter {
       .argument('[command]', 'command to show help')
       .action((command) => {
         if (command) {
-          const help = program.commands.find(cmd => cmd.name() === command).helpInformation()
+          const help = program.commands
+            .find(cmd => cmd.name() === command && !this.defaultCommands.includes(cmd.name()))?.helpInformation()
+
+          if (!help) {
+            console.log(GENERAL_HELP_TEXT)
+          }
           const helpWithoutHelpDefaultCommand = help.split('\n').filter((line) => !line.includes('--help')).join('\n')
           console.log(helpWithoutHelpDefaultCommand)
           EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
