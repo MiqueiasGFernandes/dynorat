@@ -1,6 +1,7 @@
 import { Command } from 'commander'
 import { EventListener } from '../event/EventListener'
 import { type MainMenuView } from '../views/MainMenu.view'
+import { GENERAL_HELP_TEXT } from '../constants'
 
 export class MainMenuPresenter {
   constructor (private readonly _view: MainMenuView) {}
@@ -32,6 +33,20 @@ export class MainMenuPresenter {
         if (options.generate) {
           EventListener.getEventEmitter().emit('CONFIGURE_SERVER')
         }
+      })
+
+    program
+      .command('help')
+      .argument('[command]', 'command to show help')
+      .action((command) => {
+        if (command) {
+          const opt = program.commands.find(cmd => cmd.name() === command).helpInformation()
+          console.log(opt)
+          EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
+          return
+        }
+        console.log(GENERAL_HELP_TEXT)
+        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
       })
 
     program
