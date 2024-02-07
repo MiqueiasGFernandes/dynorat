@@ -1,9 +1,8 @@
-import path from 'node:path'
+import { readFileSync, writeFileSync } from 'fs'
 import { createHash, randomUUID } from 'node:crypto'
-import { writeFileSync, readFileSync } from 'fs'
-import { Commander } from './CommandAsPromise.util'
+import path from 'node:path'
 import { Column, Entity, PrimaryColumn, Repository } from 'typeorm'
-import { EventListener } from '../event/EventListener'
+import { Commander } from './CommandAsPromise.util'
 
 const BUNDLE_SERVER_COMMAND = 'npm run bundle:server'
 const SERVER_TEMPLATE_DIRECTORY = path.resolve(__dirname, '..', '..', 'server-template')
@@ -66,13 +65,7 @@ export class OutputServer {
 
     console.log('Saving the file hash into history...')
 
-    void this._serverRepository
-      .save(this)
-      .catch((error) => { console.error(error) })
-      .then(() => {
-        console.log('Output server successfully generated!')
-        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
-      })
+    console.log('Output server successfully generated!')
   }
 
   private setConnection (connection?: ConnectionOptions | null): void {
