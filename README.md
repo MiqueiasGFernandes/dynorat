@@ -54,6 +54,9 @@ $ npm run client
 ```
 
 ```
+➜  dynorat git:(master) ✗ npm run client
+
+> dynorat@0.1.0-beta client
 > ts-node ./src/client/index.ts
 
                                                       
@@ -70,8 +73,44 @@ $ npm run client
 | | | | |_ _| |_ _| | |___| . | -_|  _| .'|
  \_/|___|_|_____|_|___|   |___|___|_| |__,|
                                            
-(dyno)-> generate server
+(dyno)-> help
+
+Usage: [command] [options]
+
+Commands:
+  clear              Clean the CLI display
+  server [options]   Servers to connect
+  session [options]  Listen for open sessions
+  exit               Exit from execution
+  help [command]     display help for command
+
+(dyno)-> 
 ```
+
+Para iniciar o servidor de testes basta executar:
+
+```
+npm run server
+```
+
+Logo em seguida, as informações da nova sessão poderão ser exibidas em da seguinte maneira:
+
+```
+(dyno)-> session -l
+┌──────┬─────────────────┬─────────┬──────────┬───────────────────┬──────────┬───────────┬───────┬─────┐
+│ # ID │ IP Address      │ Country │ User     │ Hostname          │ Latitute │ Longitute │ OS    │ CPU │
+├──────┼─────────────────┼─────────┼──────────┼───────────────────┼──────────┼───────────┼───────┼─────┤
+│ 1    │ 189.222.190.241 │ Brazil  │ codecx   │ xubuntu           │ -20.0087 │ -40.8411  │ Linux │ x64 │
+└──────┴─────────────────┴─────────┴──────────┴───────────────────┴──────────┴───────────┴───────┴─────┘
+(dyno)-> 
+
+```
+
+Os demais comandos de navegação podem ter suas opções exibidas com o comando:
+```
+help [command]
+```
+
 
 ## 😄 Seja um dos contribuidores
 
@@ -95,7 +134,7 @@ Esse projeto está sob licença MIT. Veja o arquivo [LICENÇA](LICENSE.md) para 
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 - [x] Listagem e interação com diferentes sessões
-- [ ] Melhorar a variedade de comandos para navegação
+- [x] Melhorar a variedade de comandos para navegação
 - [ ] Geração de binário para distribuição (Build compilada)
 - [ ] Melhoria na exibição das mensagens em CLI
 - [ ] Permitir suporte para ambientes microsoft Windows
