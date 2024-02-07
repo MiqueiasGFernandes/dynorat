@@ -3,6 +3,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import path from 'node:path'
 import { Column, Entity, PrimaryColumn, Repository } from 'typeorm'
 import { Commander } from './CommandAsPromise.util'
+import { EventListener } from '../event/EventListener'
 
 const BUNDLE_SERVER_COMMAND = 'npm run bundle:server'
 const SERVER_TEMPLATE_DIRECTORY = path.resolve(__dirname, '..', '..', 'server-template')
@@ -66,6 +67,8 @@ export class OutputServer {
     console.log('Saving the file hash into history...')
 
     console.log('Output server successfully generated!')
+
+    EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
   }
 
   private setConnection (connection?: ConnectionOptions | null): void {
