@@ -1,4 +1,6 @@
-![DynoRAT](docs/assets/dyno.png)
+<p align="center">
+  <img src="docs/assets/dyno.png" alt="DynoRAT">
+</p>
 
 ```
                                                       
