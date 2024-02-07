@@ -7,7 +7,6 @@
     "url": "https://github.com/MiqueiasGFernandes/dynorat.git "
   },
   "scripts": {
-    "preinstall": "nvm install && nvm use",
     "server": "ts-node ./src/server-template/src/index.ts",
     "client": "ts-node ./src/client/index.ts",
     "bundle:server": "webpack --config ./src/server-template/webpack.config.js",
@@ -16,6 +15,7 @@
   "author": "Miquéias G. Fernandes <miqueiasfernandes.dev@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-typescript": "^7.23.3",
     "axios": "^1.6.5",
     "chalk": "^5.3.0",
     "cli-table": "^0.3.11",
