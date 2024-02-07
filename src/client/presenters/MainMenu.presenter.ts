@@ -19,15 +19,12 @@ export class MainMenuPresenter {
 
     program.usage('[command] [options]')
 
-    program.exitOverride(() => {
-      EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
-    })
-
     program
       .command('clear')
       .description('Clean the CLI display')
       .action(() => {
         console.clear()
+        EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
       })
 
     program
