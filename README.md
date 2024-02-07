@@ -1,3 +1,5 @@
+![DynoRAT](docs/assets/dyno.png)
+
 ```
                                                       
  #####   #   #  #    #   ####   #####     ##    ##### 
