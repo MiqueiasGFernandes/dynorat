@@ -40,8 +40,9 @@ export class MainMenuPresenter {
       .argument('[command]', 'command to show help')
       .action((command) => {
         if (command) {
-          const opt = program.commands.find(cmd => cmd.name() === command).helpInformation()
-          console.log(opt)
+          const help = program.commands.find(cmd => cmd.name() === command).helpInformation()
+          const helpWithoutHelpDefaultCommand = help.split('\n').filter((line) => !line.includes('--help')).join('\n')
+          console.log(helpWithoutHelpDefaultCommand)
           EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
           return
         }
