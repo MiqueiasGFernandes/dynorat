@@ -139,10 +139,10 @@ Esse projeto está sob licença MIT. Veja o arquivo [LICENÇA](LICENSE.md) para 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 - [x] Listagem e interação com diferentes sessões
 - [x] Melhorar a variedade de comandos para navegação
-- [ ] Geração de binário para distribuição (Build compilada)
-- [ ] Melhoria na exibição das mensagens em CLI
+- [x] Geração de binário para distribuição (Build compilada)
+- [x] Melhoria na exibição das mensagens em CLI
 - [ ] Permitir suporte para ambientes microsoft Windows
 - [ ] Configuração de servidor para persistência na máquina de instalação
 - [ ] Exploração de escalação de privilégio em ambientes Windows/Linux
-- [ ] Monitoramento de teclas, tela e upload/download de arquivos entre cliente e servidor
 - [ ] Ofuscamento e encriptação de servidor
+- [ ] Monitoramento de teclas, tela e upload/download de arquivos entre cliente e servidor
