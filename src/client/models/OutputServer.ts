@@ -15,6 +15,11 @@ interface ConnectionOptions {
 
 @Entity('output_servers')
 export class OutputServer {
+  private readonly _osCompileMap: Record<string, string> = {
+    windows: 'node18-win',
+    linux: 'node18-linux'
+  }
+
   @PrimaryColumn({ name: 'id', type: 'varchar' })
   private _id!: string
 
@@ -29,11 +34,14 @@ export class OutputServer {
 
   constructor (
     public outputPath: string = '~/server',
-    public connection: ConnectionOptions = null,
+    public connection: ConnectionOptions,
+    public os: string[],
     private readonly _serverRepository: Repository<OutputServer>
 
   ) {
-    this.setConnection(connection)
+    if (connection) {
+      this.setConnection(connection)
+    }
     this.setId()
   }
 
@@ -56,26 +64,18 @@ export class OutputServer {
 
     console.log('Compiling server into executable file...')
 
-    Commander.command(`pkg ./src/server-template/build/server/index.js -o ${this.outputPath}`)
+    const os = this.os.map((item) => this._osCompileMap[item]).join(',')
 
-    console.log('Generating file hash...')
-
-    const fileBuffer = readFileSync(this.outputPath)
-
-    this.setHash(fileBuffer)
-
-    console.log('Saving the file hash into history...')
+    Commander.command(`pkg ./src/server-template/build/server/index.js -t ${os} -o ${this.outputPath}`)
 
     console.log('Output server successfully generated!')
 
     EventListener.getEventEmitter().emit('GO_TO_MAIN_MENU')
   }
 
-  private setConnection (connection?: ConnectionOptions | null): void {
-    if (connection !== null) {
-      this._host = connection.host
-      this._port = connection.port
-    }
+  private setConnection (connection: ConnectionOptions): void {
+    this._host = connection.host
+    this._port = connection.port
   }
 
   private setId (): void {

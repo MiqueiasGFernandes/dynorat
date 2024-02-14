@@ -1,6 +1,7 @@
 import { type Repository } from 'typeorm'
 import { OutputServer } from '../models/OutputServer'
 import { type OutputServerView } from '../views/OutputServer.view'
+import { type BuildServerOptions } from '../types/build-server-options'
 
 export class OutputServerPresenter {
   constructor (
@@ -14,13 +15,14 @@ export class OutputServerPresenter {
     this._view.askServerConfiguration()
   }
 
-  handleCompileAndBuildServer (host: string, port: number, outputPath: string): void {
+  handleCompileAndBuildServer (options: BuildServerOptions): void {
     const outputServer = new OutputServer(
-      outputPath,
+      options.outputPath,
       {
-        host,
-        port
+        host: options.host,
+        port: options.port
       },
+      options.os,
       this._serverRepository
     )
 
